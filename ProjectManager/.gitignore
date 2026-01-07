@@ -1,0 +1,25 @@
+# --- Pliki tymczasowe Visual Studio ---
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# --- Pliki skompilowane (Build) ---
+[Bb]in/
+[Oo]bj/
+
+# --- Baza danych (Najwa¿niejsze!) ---
+*.mdf
+*.ldf
+*.sqlite
+*.db
+
+# --- Logi i pliki systemowe ---
+*.log
+Thumbs.db
+.DS_Store
+
+# --- Inne ---
+node_modules/
+.vscode/
