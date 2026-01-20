@@ -12,8 +12,8 @@ namespace ProjectManager.Models
         public DateTime Deadline { get; set; }
 
         public int CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
+        public virtual Customer? Customer { get; set; }
 
-        public virtual ICollection<ProjectTask> ProjectTasks { get; set; }
+        public virtual ICollection<ProjectTask>? ProjectTasks { get; set; }
     }
 }
