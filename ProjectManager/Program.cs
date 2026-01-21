@@ -9,7 +9,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 // Identity configuration disabled e-mail verification 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => {
@@ -85,7 +85,7 @@ async Task CreateDbIfNotExists(IHost host)
             if (adminUser == null)
             {
                 adminUser = new IdentityUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true };
-                var result = await userManager.CreateAsync(adminUser, "Haslo123!"); // Has³o testowe
+                var result = await userManager.CreateAsync(adminUser, "Haslo123!"); // Hasï¿½o testowe
 
                 if (result.Succeeded)
                 {
@@ -96,7 +96,7 @@ async Task CreateDbIfNotExists(IHost host)
         catch (Exception ex)
         {
             var logger = services.GetRequiredService<ILogger<Program>>();
-            logger.LogError(ex, "Wyst¹pi³ b³¹d podczas tworzenia bazy danych lub seedowania u¿ytkowników.");
+            logger.LogError(ex, "Wystï¿½piï¿½ bï¿½ï¿½d podczas tworzenia bazy danych lub seedowania uï¿½ytkownikï¿½w.");
         }
     }
 }
