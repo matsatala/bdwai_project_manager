@@ -1,0 +1,33 @@
+@model ProjectManager.Models.Project
+
+@{
+    ViewData["Title"] = "Usuń projekt";
+}
+
+<h1>Usuwanie</h1>
+
+<h3>Czy na pewno chcesz usunąć ten projekt?</h3>
+<div class="alert alert-danger">
+    <strong>Uwaga!</strong> Ta operacja jest nieodwracalna. Usunięcie projektu spowoduje również usunięcie przypisanych do niego zadań.
+</div>
+
+<div>
+    <h4>Projekt: @Model.Title</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">Opis</dt>
+        <dd class = "col-sm-10">@Model.Description</dd>
+        
+        <dt class = "col-sm-2">Termin</dt>
+        <dd class = "col-sm-10">@Model.Deadline.ToShortDateString()</dd>
+        
+        <dt class = "col-sm-2">Klient</dt>
+        <dd class = "col-sm-10">@Model.Customer?.CompanyName</dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Potwierdź usunięcie" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+    </form>
+</div>

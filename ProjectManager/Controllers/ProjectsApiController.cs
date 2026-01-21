@@ -25,7 +25,7 @@ namespace ProjectManager.Controllers
                     p.Title,
                     p.Description,
                     Deadline = p.Deadline.ToString("yyyy-MM-dd"),
-                    CustomerName = p.Customer.CompanyName,
+                    CustomerName = p.Customer.CompanyName
                     
                 })
                 .ToListAsync();

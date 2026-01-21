@@ -11,8 +11,8 @@ using ProjectManager.Data;
 namespace ProjectManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260121105008_InitSQLite")]
-    partial class InitSQLite
+    [Migration("20260121153719_ResetAndFix")]
+    partial class ResetAndFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -229,18 +229,6 @@ namespace ProjectManager.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Frontend"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Backend"
-                        });
                 });
 
             modelBuilder.Entity("ProjectManager.Models.Customer", b =>
@@ -320,6 +308,10 @@ namespace ProjectManager.Migrations
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Priority")
                         .HasColumnType("INTEGER");
@@ -408,7 +400,7 @@ namespace ProjectManager.Migrations
             modelBuilder.Entity("ProjectManager.Models.ProjectTask", b =>
                 {
                     b.HasOne("ProjectManager.Models.Category", "Category")
-                        .WithMany("ProjectTasks")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -422,11 +414,6 @@ namespace ProjectManager.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("ProjectManager.Models.Category", b =>
-                {
-                    b.Navigation("ProjectTasks");
                 });
 
             modelBuilder.Entity("ProjectManager.Models.Customer", b =>

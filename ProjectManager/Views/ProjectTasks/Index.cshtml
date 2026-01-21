@@ -1,0 +1,38 @@
+@model IEnumerable<ProjectManager.Models.ProjectTask>
+
+@{ ViewData["Title"] = "Zadania"; }
+
+<h1>Lista Zadań</h1>
+
+<p><a asp-action="Create" class="btn btn-primary">Dodaj zadanie</a></p>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Temat</th>
+        <th>Typ</th>
+        <th>Opis</th>
+        <th>Postęp</th>
+        <th>Projekt</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>@item.Topic</td>
+            <td>
+                @if(item.Category?.Name == "Bug") { <span class="badge bg-danger">BUG</span> }
+                else if(item.Category?.Name == "Feature") { <span class="badge bg-primary">Feature</span> }
+                else { <span class="badge bg-secondary">@item.Category?.Name</span> }
+            </td>
+            <td>@item.Description</td>
+            <td>
+                <div class="progress" style="height: 20px;">
+                    <div class="progress-bar" role="progressbar" style="width: @item.Progress%;" aria-valuenow="@item.Progress" aria-valuemin="0" aria-valuemax="100">@item.Progress%</div>
+                </div>
+            </td>
+            <td>@item.Project?.Title</td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,8 +1,43 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Strona główna";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mt-5">
+    <h1 class="display-4">Witaj w ProjectManager!</h1>
+    <p class="lead">Twoje centrum zarządzania projektami i zadaniami.</p>
+    <hr class="my-4">
 </div>
+
+<div class="row mt-4 justify-content-center">
+    <div class="col-md-5 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <h3 class="card-title text-primary">📂 Projekty</h3>
+                <p class="card-text">Przeglądaj aktywne projekty, dodawaj nowe i zarządzaj terminami.</p>
+                <a asp-controller="Projects" asp-action="Index" class="btn btn-lg btn-primary w-75">
+                    Przejdź do Projektów
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <h3 class="card-title text-success">✅ Zadania</h3>
+                <p class="card-text">Sprawdź, co jest do zrobienia. Monitoruj postępy i priorytety.</p>
+                <a asp-controller="ProjectTasks" asp-action="Index" class="btn btn-lg btn-success w-75">
+                    Moje Zadania
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="text-center mt-3">
+        <p>Aby rozpocząć pracę, musisz się zalogować.</p>
+        <a class="btn btn-outline-dark" asp-area="Identity" asp-page="/Account/Login">Zaloguj się</a>
+    </div>
+}

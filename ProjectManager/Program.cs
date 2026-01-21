@@ -25,7 +25,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Creating admin with application start
 await CreateDbIfNotExists(app);
 
 // Configure the HTTP request pipeline.
@@ -67,7 +66,7 @@ async Task CreateDbIfNotExists(IHost host)
         {
             var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
+            var categoriesManager = services.GetRequiredService<ProjectManager.Data.ApplicationDbContext>();
             // Creating roles if not existing
             if (!await roleManager.RoleExistsAsync("Admin"))
             {
@@ -91,6 +90,16 @@ async Task CreateDbIfNotExists(IHost host)
                 {
                     await userManager.AddToRoleAsync(adminUser, "Admin");
                 }
+            }
+            //Creating categories
+            if (!categoriesManager.Categories.Any())
+            {
+                categoriesManager.Categories.AddRange(
+                    new ProjectManager.Models.Category{ Name = "Feature"},
+                    new ProjectManager.Models.Category{ Name = "Bug"},
+                    new ProjectManager.Models.Category{ Name = "Documentation"}
+                    );
+                categoriesManager.SaveChanges();
             }
         }
         catch (Exception ex)

@@ -1,0 +1,50 @@
+@model ProjectManager.Models.ProjectTask
+
+@{ ViewData["Title"] = "Nowe Zadanie"; }
+
+<h1>Dodaj Zadanie</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="Topic" class="control-label">Temat</label>
+                <input asp-for="Topic" class="form-control" />
+                <span asp-validation-for="Topic" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="control-label">Opis szczegółowy</label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="CategoryId" class="control-label">Typ zadania (Kategoria)</label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="Progress" class="control-label">Postęp (%)</label>
+                <input asp-for="Progress" type="number" class="form-control" value="0" />
+                <span asp-validation-for="Progress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Priority" class="control-label">Priorytet</label>
+                <input asp-for="Priority" type="number" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ProjectId" class="control-label">Projekt</label>
+                <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Dodaj" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Powrót</a>
+            </div>
+        </form>
+    </div>
+</div>
