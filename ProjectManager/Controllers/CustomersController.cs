@@ -30,6 +30,8 @@ public class CustomersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Customer customer)
     {
+        ModelState.Remove("Projects");
+        
         if (ModelState.IsValid)
         {
             _context.Add(customer);

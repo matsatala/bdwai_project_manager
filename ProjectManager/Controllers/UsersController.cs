@@ -20,7 +20,9 @@ namespace ProjectManager.Controllers
         // Lista użytkowników
         public async Task<IActionResult> Index()
         {
-            var users = await _userManager.Users.ToListAsync();
+            var users = await _userManager.Users
+                .Where(u => u.Email !=  "admin@test.pl")
+                .ToListAsync();
             return View(users);
         }
 

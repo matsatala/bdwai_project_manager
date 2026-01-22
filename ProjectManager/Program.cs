@@ -84,7 +84,7 @@ async Task CreateDbIfNotExists(IHost host)
             if (adminUser == null)
             {
                 adminUser = new IdentityUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true };
-                var result = await userManager.CreateAsync(adminUser, "Haslo123!"); // Has�o testowe
+                var result = await userManager.CreateAsync(adminUser, "Haslo123!"); 
 
                 if (result.Succeeded)
                 {

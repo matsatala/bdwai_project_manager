@@ -17,6 +17,6 @@ namespace ProjectManager.Models
         [Display(Name = "Numer Telefonu")]
         public string? PhoneNumber { get; set; }
 
-        public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<Project>? Projects { get; set; }
     }
 }

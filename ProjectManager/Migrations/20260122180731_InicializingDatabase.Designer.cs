@@ -11,8 +11,8 @@ using ProjectManager.Data;
 namespace ProjectManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260122124923_CascadeDelete")]
-    partial class CascadeDelete
+    [Migration("20260122180731_InicializingDatabase")]
+    partial class InicializingDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -255,15 +255,6 @@ namespace ProjectManager.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CompanyName = "Firma Testowa",
-                            ContactEmail = "admin@test.pl",
-                            NIP = "0000000000"
-                        });
                 });
 
             modelBuilder.Entity("ProjectManager.Models.Project", b =>
@@ -291,16 +282,6 @@ namespace ProjectManager.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Projects");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CustomerId = 1,
-                            Deadline = new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Projekt zaliczeniowy",
-                            Title = "Aplikacja WWW"
-                        });
                 });
 
             modelBuilder.Entity("ProjectManager.Models.ProjectTask", b =>
@@ -308,6 +289,9 @@ namespace ProjectManager.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("AssignedUserId")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("INTEGER");
@@ -330,6 +314,8 @@ namespace ProjectManager.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssignedUserId");
 
                     b.HasIndex("CategoryId");
 
@@ -402,6 +388,11 @@ namespace ProjectManager.Migrations
 
             modelBuilder.Entity("ProjectManager.Models.ProjectTask", b =>
                 {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "AssignedUser")
+                        .WithMany()
+                        .HasForeignKey("AssignedUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("ProjectManager.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
@@ -413,6 +404,8 @@ namespace ProjectManager.Migrations
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AssignedUser");
 
                     b.Navigation("Category");
 

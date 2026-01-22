@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjectManager.Data;
 using ProjectManager.Models;
+using System.Security.Claims;
 
 namespace ProjectManager.Controllers
 {
@@ -18,13 +19,36 @@ namespace ProjectManager.Controllers
         }
 
         // GET: ProjectTasks
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? projectId, bool onlyMine = false)
         {
-            var tasks = _context.ProjectTasks
+            var tasksQuery = _context.ProjectTasks
                 .Include(t => t.Project)
                 .Include(t => t.Category)
-                .Include(t => t.AssignedUser);
-            return View(await tasks.ToListAsync());
+                .Include(t => t.AssignedUser)
+                .AsQueryable();
+           
+            //If id has value we filter tasks by it
+            if (projectId.HasValue)
+            {
+                tasksQuery = tasksQuery.Where(t => t.ProjectId == projectId);
+
+                // Pobierz nazwê projektu, ¿eby wyœwietliæ j¹ w nag³ówku (opcjonalne, ale ³adne)
+                var project = await _context.Projects.FindAsync(projectId);
+                ViewData["ProjectTitle"] = project?.Title;
+                ViewData["ProjectId"] = projectId; // Przekazujemy ID dalej, przyda siê do przycisku "Dodaj"
+            }
+            if (onlyMine)
+            {
+                // Pobieramy ID aktualnie zalogowanego u¿ytkownika
+                var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (currentUserId != null)
+                {
+                    tasksQuery = tasksQuery.Where(t => t.AssignedUserId == currentUserId);
+                    ViewData["FilterInfo"] = "Wyœwietlam tylko Twoje zadania";
+                }
+            }
+            return View(await tasksQuery.ToListAsync());
         }
 
         // GET: ProjectTasks/Create

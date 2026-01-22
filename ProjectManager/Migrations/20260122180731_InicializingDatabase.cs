@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectManager.Migrations
 {
     /// <inheritdoc />
-    public partial class CascadeDelete : Migration
+    public partial class InicializingDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -218,11 +218,18 @@ namespace ProjectManager.Migrations
                     Progress = table.Column<int>(type: "INTEGER", nullable: false),
                     Priority = table.Column<int>(type: "INTEGER", nullable: false),
                     ProjectId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CategoryId = table.Column<int>(type: "INTEGER", nullable: false)
+                    CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
+                    AssignedUserId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProjectTasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProjectTasks_AspNetUsers_AssignedUserId",
+                        column: x => x.AssignedUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_ProjectTasks_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -236,16 +243,6 @@ namespace ProjectManager.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.InsertData(
-                table: "Customers",
-                columns: new[] { "Id", "CompanyName", "ContactEmail", "NIP", "PhoneNumber" },
-                values: new object[] { 1, "Firma Testowa", "admin@test.pl", "0000000000", null });
-
-            migrationBuilder.InsertData(
-                table: "Projects",
-                columns: new[] { "Id", "CustomerId", "Deadline", "Description", "Title" },
-                values: new object[] { 1, 1, new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Projekt zaliczeniowy", "Aplikacja WWW" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -288,6 +285,11 @@ namespace ProjectManager.Migrations
                 name: "IX_Projects_CustomerId",
                 table: "Projects",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectTasks_AssignedUserId",
+                table: "ProjectTasks",
+                column: "AssignedUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectTasks_CategoryId",

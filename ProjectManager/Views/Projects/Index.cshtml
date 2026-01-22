@@ -2,6 +2,23 @@
 @{
     ViewData["Title"] = "Lista Projektów";
 }
+@{
+    ViewData["Title"] = "Zadania";
+}
+
+<h1>Lista Zadań</h1>
+
+@if (ViewData["ProjectTitle"] != null)
+{
+    <div class="alert alert-info">
+        Przeglądasz zadania dla projektu: <strong>@ViewData["ProjectTitle"]</strong>
+        <a asp-action="Index" class="float-end">Pokaż wszystkie</a>
+    </div>
+}
+
+<p>
+    <a asp-action="Create" asp-route-projectId="@ViewData["ProjectId"]" class="btn btn-primary">Dodaj zadanie</a>
+</p>
 
 <h1>Projekty</h1>
 
@@ -30,7 +47,9 @@
             <td>@item.Deadline.ToShortDateString()</td>
             <td>@item.Customer?.CompanyName</td>
             <td>
-                <a asp-controller="ProjectTasks" asp-action="Index" class="btn btn-sm btn-info">Zadania</a>
+                <a asp-controller="ProjectTasks" asp-action="Index" asp-route-projectId="@item.Id" class="btn btn-sm btn-info">
+                     Zadania
+                </a>
                 
                 @if (User.IsInRole("Admin"))
                 {
