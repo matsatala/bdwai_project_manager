@@ -32,14 +32,14 @@ namespace ProjectManager.Controllers
             {
                 tasksQuery = tasksQuery.Where(t => t.ProjectId == projectId);
 
-                // Pobierz nazwê projektu, ¿eby wyœwietliæ j¹ w nag³ówku (opcjonalne, ale ³adne)
+                // get name of project 
                 var project = await _context.Projects.FindAsync(projectId);
                 ViewData["ProjectTitle"] = project?.Title;
-                ViewData["ProjectId"] = projectId; // Przekazujemy ID dalej, przyda siê do przycisku "Dodaj"
+                ViewData["ProjectId"] = projectId;
             }
             if (onlyMine)
             {
-                // Pobieramy ID aktualnie zalogowanego u¿ytkownika
+                // id of current user
                 var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 if (currentUserId != null)

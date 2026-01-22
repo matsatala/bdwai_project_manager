@@ -16,14 +16,14 @@ namespace ProjectManager.Controllers
         {
             _context = context;
         }
-        // GET: Projects getting project list
+        // GET: /Projects getting project list
         public async Task<IActionResult> Index()
         {
             var projects = await _context.Projects.Include(p => p.Customer).ToListAsync();
             return View(projects);
                 
         }
-        // GET: Projects/Create display empty form
+        // GET: /Projects/Create display empty form
         public IActionResult Create()
         {
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "CompanyName");
@@ -48,7 +48,7 @@ namespace ProjectManager.Controllers
         }
         
         // GET: Projects/Edit/5
-        [Authorize(Roles = "Admin")] // Tylko Admin wejdzie tutaj
+        [Authorize(Roles = "Admin")] // only for admin role
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -68,7 +68,7 @@ namespace ProjectManager.Controllers
         {
             if (id != project.Id) return NotFound();
 
-            // Fix walidacji (jak wcześniej)
+            
             ModelState.Remove("Customer");
             ModelState.Remove("ProjectTasks");
 
@@ -105,7 +105,7 @@ namespace ProjectManager.Controllers
             return View(project);
         }
 
-// POST: Projects/Delete/5
+        // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]

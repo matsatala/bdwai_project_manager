@@ -10,7 +10,7 @@ namespace ProjectManager.Models
         [Required(ErrorMessage = "Temat jest wymagany")]
         public string Topic { get; set; }
 
-        public string Description { get; set; } // OPIS
+        public string Description { get; set; }
 
         [Range(0, 100, ErrorMessage = "Postęp musi być od 0 do 100")]
         public int Progress { get; set; }

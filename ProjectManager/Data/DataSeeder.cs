@@ -14,7 +14,7 @@ namespace ProjectManager.Data
                 // 1. Sprawdź, czy baza jest utworzona
                 context.Database.EnsureCreated();
 
-                // 2. Jeśli są już projekty, nie rób nic (nie dubluj danych)
+                // 2. Jeśli są już projekty, nie rób nic
                 if (context.Projects.Any())
                 {
                     return; 
@@ -22,7 +22,7 @@ namespace ProjectManager.Data
 
                 var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-                // --- KROK A: TWORZENIE 3 UŻYTKOWNIKÓW ---
+                
                 var users = new List<IdentityUser>();
                 for (int i = 1; i <= 3; i++)
                 {
@@ -31,7 +31,7 @@ namespace ProjectManager.Data
                     if (user == null)
                     {
                         user = new IdentityUser { UserName = email, Email = email, EmailConfirmed = true };
-                        // Hasło musi spełniać wymogi (Duża litera, cyfra, znak spec.)
+                       
                         await userManager.CreateAsync(user, "Haslo123!"); 
                         users.Add(user);
                     }
@@ -41,7 +41,6 @@ namespace ProjectManager.Data
                     }
                 }
 
-                // --- KROK B: TWORZENIE 3 KLIENTÓW ---
                 var customers = new List<Customer>
                 {
                     new Customer { CompanyName = "TechCorp S.A.", NIP = "1234567890", ContactEmail = "kontakt@techcorp.pl", PhoneNumber = "111-222-333" },
@@ -49,9 +48,9 @@ namespace ProjectManager.Data
                     new Customer { CompanyName = "Januszex Import-Export", NIP = "5555555555", ContactEmail = "prezes@januszex.pl", PhoneNumber = "777-888-999" }
                 };
                 context.Customers.AddRange(customers);
-                await context.SaveChangesAsync(); // Zapisz, żeby dostać ich ID
+                await context.SaveChangesAsync();
 
-                // --- KROK C: TWORZENIE 4 PROJEKTÓW ---
+            
                 var projects = new List<Project>
                 {
                     new Project { Title = "System CRM", Description = "Budowa systemu CRM dla klienta", Deadline = DateTime.Now.AddMonths(2), CustomerId = customers[0].Id },
@@ -62,26 +61,24 @@ namespace ProjectManager.Data
                 context.Projects.AddRange(projects);
                 await context.SaveChangesAsync();
 
-                // --- KROK D: TWORZENIE ZADAŃ (3 na każdy projekt) ---
                 var random = new Random();
-                var categories = context.Categories.ToList(); // Pobierz kategorie (Bug, Feature...)
+                var categories = context.Categories.ToList(); 
 
                 foreach (var project in projects)
                 {
                     for (int j = 1; j <= 3; j++)
                     {
-                        // Losowy user
+                       
                         var randomUser = users[random.Next(users.Count)];
-                        // Losowa kategoria (jeśli są)
+                        
                         var randomCatId = categories.Any() ? categories[random.Next(categories.Count)].Id : 0;
-                        // Jeśli nie ma kategorii w bazie, musisz zadbać, żeby ten kod nie wybuchł, 
-                        // ale zakładamy, że kategorie dodały się z poprzedniego kodu w Program.cs
+                       
 
                         context.ProjectTasks.Add(new ProjectTask
                         {
                             Topic = $"Zadanie {j} dla {project.Title}",
                             Description = "Automatycznie wygenerowane zadanie testowe.",
-                            Priority = random.Next(1, 4), // 1-3
+                            Priority = random.Next(1, 4),
                             Progress = random.Next(0, 100),
                             ProjectId = project.Id,
                             CategoryId = randomCatId,

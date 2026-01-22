@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProjectManager.Data; // Jeśli potrzebne do innych rzeczy, ale tu użyjemy UserManager
+using ProjectManager.Data; 
 
 namespace ProjectManager.Controllers
 {
     
-    [Authorize(Roles = "Admin")] // Tylko Admin!
+    [Authorize(Roles = "Admin")] // only admin
     public class UsersController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -17,7 +17,7 @@ namespace ProjectManager.Controllers
             _userManager = userManager;
         }
 
-        // Lista użytkowników
+        // users list
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users
@@ -26,8 +26,7 @@ namespace ProjectManager.Controllers
             return View(users);
         }
 
-        // Usuwanie - akcja bezpośrednia (bez widoku potwierdzenia dla szybkości, 
-        // lub możesz zrobić widok potwierdzenia analogicznie jak w Customers)
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(string id)
@@ -35,8 +34,7 @@ namespace ProjectManager.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
-                // To usunie użytkownika. Dzięki 'OnDelete(SetNull)' w bazie,
-                // zadania tego użytkownika staną się "Nieprzypisane", ale nie znikną.
+                
                 await _userManager.DeleteAsync(user);
             }
             return RedirectToAction(nameof(Index));

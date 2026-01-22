@@ -39,7 +39,7 @@ namespace ProjectManager.Data
             // 3. Zasada: Usunięcie użytkownika nie usuwa Taska
             modelBuilder.Entity<ProjectTask>()
                 .HasOne(t => t.AssignedUser)
-                .WithMany() // Użytkownik nie musi mieć kolekcji zadań w swoim modelu
+                .WithMany()
                 .HasForeignKey(t => t.AssignedUserId)
                 .OnDelete(DeleteBehavior.SetNull);
             
