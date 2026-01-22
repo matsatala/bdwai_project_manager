@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace ProjectManager.Models
 {
@@ -23,5 +24,7 @@ namespace ProjectManager.Models
         // Relacja z Kategorią
         public int CategoryId { get; set; }
         public virtual Category? Category { get; set; }
+        public string? AssignedUserId { get; set; } 
+        public virtual IdentityUser? AssignedUser { get; set; }
     }
 }

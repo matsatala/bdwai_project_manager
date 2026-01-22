@@ -17,26 +17,32 @@ namespace ProjectManager.Data
         public DbSet<ProjectTask> ProjectTasks { get; set; }
         public DbSet<Category> Categories { get; set; }
 
-        // Dane startowe
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-        
-            // // Kategorie
-            // modelBuilder.Entity<Category>().HasData(
-            //     new Category { Id = 1, Name = "Frontend" },
-            //     new Category { Id = 2, Name = "Backend" }
-            // );
-        
-            // Klient
-            modelBuilder.Entity<Customer>().HasData(
-                new Customer { Id = 1, CompanyName = "Firma Testowa", ContactEmail = "admin@test.pl", NIP = "0000000000" }
-            );
-        
-            // Projekt
-            modelBuilder.Entity<Project>().HasData(
-                new Project { Id = 1, Title = "Aplikacja WWW", Description = "Projekt zaliczeniowy", Deadline = new DateTime(2026, 06, 01), CustomerId = 1 }
-            );
+            
+            // 1. Zasada: Usunięcie Customera usuwa jego Projekty
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.Customer)
+                .WithMany(c => c.Projects)
+                .HasForeignKey(p => p.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // 2. Zasada: Usunięcie Projektu usuwa jego Zadania (dla pewności)
+            modelBuilder.Entity<ProjectTask>()
+                .HasOne(t => t.Project)
+                .WithMany(p => p.ProjectTasks)
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            // 3. Zasada: Usunięcie użytkownika nie usuwa Taska
+            modelBuilder.Entity<ProjectTask>()
+                .HasOne(t => t.AssignedUser)
+                .WithMany() // Użytkownik nie musi mieć kolekcji zadań w swoim modelu
+                .HasForeignKey(t => t.AssignedUserId)
+                .OnDelete(DeleteBehavior.SetNull);
+            
         }
     }
 }

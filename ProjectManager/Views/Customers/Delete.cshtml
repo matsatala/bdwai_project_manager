@@ -1,0 +1,31 @@
+@model ProjectManager.Models.Customer
+
+@{ ViewData["Title"] = "Usuń Klienta"; }
+
+<h1>Usuń Klienta</h1>
+
+<div class="alert alert-danger">
+    <h3>Czy na pewno chcesz usunąć tego klienta?</h3>
+    <p>Uwaga: Jeśli ten klient ma przypisane projekty, mogą one zostać usunięte lub spowodować błąd bazy danych (zależnie od konfiguracji).</p>
+</div>
+
+<div>
+    <h4>Klient: @Model.CompanyName</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">NIP</dt>
+        <dd class="col-sm-10">@Model.NIP</dd>
+        
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.ContactEmail</dd>
+        
+        <dt class="col-sm-2">Telefon</dt>
+        <dd class="col-sm-10">@Model.PhoneNumber</dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Usuń bezpowrotnie" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+    </form>
+</div>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectManager.Migrations
 {
     /// <inheritdoc />
-    public partial class ResetAndFix : Migration
+    public partial class CascadeDelete : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,7 +71,8 @@ namespace ProjectManager.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     CompanyName = table.Column<string>(type: "TEXT", nullable: false),
                     ContactEmail = table.Column<string>(type: "TEXT", nullable: false),
-                    NIP = table.Column<string>(type: "TEXT", nullable: false)
+                    NIP = table.Column<string>(type: "TEXT", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -238,8 +239,8 @@ namespace ProjectManager.Migrations
 
             migrationBuilder.InsertData(
                 table: "Customers",
-                columns: new[] { "Id", "CompanyName", "ContactEmail", "NIP" },
-                values: new object[] { 1, "Firma Testowa", "admin@test.pl", "0000000000" });
+                columns: new[] { "Id", "CompanyName", "ContactEmail", "NIP", "PhoneNumber" },
+                values: new object[] { 1, "Firma Testowa", "admin@test.pl", "0000000000", null });
 
             migrationBuilder.InsertData(
                 table: "Projects",

@@ -1,0 +1,31 @@
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<IdentityUser>
+
+@{ ViewData["Title"] = "Użytkownicy"; }
+
+<h1>Zarządzanie Użytkownikami</h1>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Email / Login</th>
+        <th>ID</th>
+        <th>Akcje</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td><small class="text-muted">@user.Id</small></td>
+            <td>
+                <form asp-action="Delete" method="post" onsubmit="return confirm('Czy na pewno usunąć tego użytkownika?');">
+                    <input type="hidden" name="id" value="@user.Id" />
+                    <button type="submit" class="btn btn-sm btn-danger">Usuń</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

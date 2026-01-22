@@ -14,6 +14,7 @@
         <th>Opis</th>
         <th>Postęp</th>
         <th>Projekt</th>
+        <th>Przypisany do</th>
     </tr>
     </thead>
     <tbody>
@@ -32,6 +33,16 @@
                 </div>
             </td>
             <td>@item.Project?.Title</td>
+            <td>
+                @if(item.AssignedUser != null)
+                {
+                    <span class="badge bg-info text-dark">@item.AssignedUser.Email</span>
+                }
+                else
+                {
+                    <span class="text-muted">Nieprzypisane</span>
+                }
+            </td>
         </tr>
     }
     </tbody>

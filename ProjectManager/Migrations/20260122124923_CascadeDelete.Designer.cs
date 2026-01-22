@@ -11,8 +11,8 @@ using ProjectManager.Data;
 namespace ProjectManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260121153719_ResetAndFix")]
-    partial class ResetAndFix
+    [Migration("20260122124923_CascadeDelete")]
+    partial class CascadeDelete
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -247,6 +247,9 @@ namespace ProjectManager.Migrations
 
                     b.Property<string>("NIP")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

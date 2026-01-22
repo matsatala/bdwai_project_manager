@@ -66,7 +66,7 @@ async Task CreateDbIfNotExists(IHost host)
         {
             var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-            var categoriesManager = services.GetRequiredService<ProjectManager.Data.ApplicationDbContext>();
+            var context = services.GetRequiredService<ProjectManager.Data.ApplicationDbContext>();
             // Creating roles if not existing
             if (!await roleManager.RoleExistsAsync("Admin"))
             {
@@ -92,14 +92,16 @@ async Task CreateDbIfNotExists(IHost host)
                 }
             }
             //Creating categories
-            if (!categoriesManager.Categories.Any())
+            if (!context.Categories.Any())
             {
-                categoriesManager.Categories.AddRange(
+                context.Categories.AddRange(
                     new ProjectManager.Models.Category{ Name = "Feature"},
                     new ProjectManager.Models.Category{ Name = "Bug"},
                     new ProjectManager.Models.Category{ Name = "Documentation"}
                     );
-                categoriesManager.SaveChanges();
+                context.SaveChanges();
+                
+                await DataSeeder.Initialize(services);
             }
         }
         catch (Exception ex)
