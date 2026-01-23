@@ -1,43 +1,85 @@
-﻿@{
-    ViewData["Title"] = "Strona główna";
+﻿@model ProjectManager.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center mt-5">
-    <h1 class="display-4">Witaj w ProjectManager!</h1>
-    <p class="lead">Twoje centrum zarządzania projektami i zadaniami.</p>
-    <hr class="my-4">
-</div>
+<div class="container mt-4">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Witaj w ProjectManager! 🚀</h1>
+        <p class="lead text-muted">Twoje centrum dowodzenia projektami.</p>
+    </div>
 
-<div class="row mt-4 justify-content-center">
-    <div class="col-md-5 mb-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body text-center">
-                <h3 class="card-title text-primary">📂 Projekty</h3>
-                <p class="card-text">Przeglądaj aktywne projekty, dodawaj nowe i zarządzaj terminami.</p>
-                <a asp-controller="Projects" asp-action="Index" class="btn btn-lg btn-primary w-75">
-                    Przejdź do Projektów
-                </a>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="row mb-5">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm bg-primary text-white text-center p-3">
+                    <h6>Aktywne Projekty</h6>
+                    <h2 class="fw-bold">@Model.TotalProjects</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm bg-success text-white text-center p-3">
+                    <h6>Wszystkie Zadania</h6>
+                    <h2 class="fw-bold">@Model.TotalTasks</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm bg-info text-white text-center p-3">
+                    <h6>Ukończone Zadania</h6>
+                    <h2 class="fw-bold">@Model.CompletedTasks</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm bg-warning text-dark text-center p-3">
+                    <h6>Ogólny Postęp</h6>
+                    <h2 class="fw-bold">@Model.AverageProgress%</h2>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-5 mb-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body text-center">
-                <h3 class="card-title text-success">✅ Zadania</h3>
-                <p class="card-text">Sprawdź, co jest do zrobienia. Monitoruj postępy i priorytety.</p>
-                <a asp-controller="ProjectTasks" asp-action="Index" asp-route-onlyMine="true" class="btn btn-lg btn-success w-75">
-                    Moje Zadania
-                </a>
+        <div class="row">
+            <div class="col-md-7 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-white fw-bold">🕒 Nadchodzące Deadlines</div>
+                    <div class="card-body">
+                        @if (Model.UpcomingDeadlines.Any())
+                        {
+                            <ul class="list-group list-group-flush">
+                                @foreach (var p in Model.UpcomingDeadlines)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        @p.Title
+                                        <span class="badge bg-outline-secondary text-dark border">@p.Deadline.ToShortDateString()</span>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p class="text-muted small">Brak nadchodzących terminów.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-white fw-bold">⚡ Szybkie akcje</div>
+                    <div class="card-body d-grid gap-2">
+                        <a asp-controller="Projects" asp-action="Index" class="btn btn-outline-primary">📂 Lista Projektów</a>
+                        <a asp-controller="ProjectTasks" asp-action="Index" asp-route-onlyMine="true" class="btn btn-outline-success">✅ Moje Zadania</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    }
+    else
+    {
+        <div class="text-center bg-light p-5 rounded-3 border shadow-sm">
+            <h3>Gotowy do pracy?</h3>
+            <p>Zaloguj się, aby uzyskać dostęp do swoich statystyk i zadań.</p>
+            <a class="btn btn-primary btn-lg px-5" asp-area="Identity" asp-page="/Account/Login">Zaloguj się</a>
+        </div>
+    }
 </div>
-
-@if (!User.Identity.IsAuthenticated)
-{
-    <div class="text-center mt-3">
-        <p>Aby rozpocząć pracę, musisz się zalogować.</p>
-        <a class="btn btn-outline-dark" asp-area="Identity" asp-page="/Account/Login">Zaloguj się</a>
-    </div>
-}
