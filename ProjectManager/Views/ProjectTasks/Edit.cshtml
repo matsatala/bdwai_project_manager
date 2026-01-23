@@ -1,0 +1,68 @@
+@model ProjectManager.Models.ProjectTask
+
+@{ ViewData["Title"] = "Edytuj Zadanie"; }
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Edycja Zadania: @Model.Topic</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Topic" class="form-label fw-bold">Temat</label>
+                        <input asp-for="Topic" class="form-control" />
+                        <span asp-validation-for="Topic" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CategoryId" class="form-label fw-bold">Kategoria</label>
+                        <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId"></select>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label fw-bold">Opis</label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ProjectId" class="form-label fw-bold">Projekt</label>
+                        <select asp-for="ProjectId" class="form-select" asp-items="ViewBag.ProjectId"></select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="AssignedUserId" class="form-label fw-bold">Wykonawca</label>
+                        <select asp-for="AssignedUserId" class="form-select" asp-items="ViewBag.AssignedUserId">
+                            <option value="">-- Nieprzypisane --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Progress" class="form-label fw-bold">Postęp: <span id="progressValue">@Model.Progress</span>%</label>
+                    <input type="range" asp-for="Progress" class="form-range" min="0" max="100" id="progressRange" oninput="updateValue(this.value)">
+                    <span asp-validation-for="Progress" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">Powrót do listy</a>
+                    <button type="submit" class="btn btn-success px-5">Zapisz zmiany</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function updateValue(val) {
+            document.getElementById('progressValue').innerText = val;
+        }
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
