@@ -3674,24 +3674,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\matsa\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\BdwaiProject\\ProjectManager\\ProjectManager.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\bdwai_project_manager\\ProjectManager\\ProjectManager.csproj",
       "projectName": "ProjectManager",
-      "projectPath": "D:\\BdwaiProject\\ProjectManager\\ProjectManager.csproj",
-      "packagesPath": "C:\\Users\\matsa\\.nuget\\packages\\",
-      "outputPath": "D:\\BdwaiProject\\ProjectManager\\obj\\",
+      "projectPath": "C:\\Users\\Admin\\source\\repos\\bdwai_project_manager\\ProjectManager\\ProjectManager.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Admin\\source\\repos\\bdwai_project_manager\\ProjectManager\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\matsa\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
